@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Apex Stock Management System</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon-BV5_L3xv.svg" />
+  <script type="module" crossorigin src="./assets/login-BYMLH5id.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/auth-CHT25mg-.js">
+  <link rel="stylesheet" crossorigin href="./assets/auth-Dy1PYEy1.css">
+</head>
+<body class="login-body">
+
+  <div class="login-card">
+    <div class="login-brand">
+      <img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%20fill='none'%3e%3crect%20width='48'%20height='48'%20rx='12'%20fill='%230057E7'/%3e%3cpath%20d='M14%2017L24%2011L34%2017V31L24%2037L14%2031V17Z'%20stroke='%23FFFFFF'%20stroke-width='2.5'%20stroke-linejoin='round'/%3e%3cpath%20d='M14%2017L24%2023L34%2017'%20stroke='%23FFFFFF'%20stroke-width='2.5'%20stroke-linejoin='round'/%3e%3cpath%20d='M24%2023V37'%20stroke='%23FFFFFF'%20stroke-width='2.5'%20stroke-linejoin='round'/%3e%3ccircle%20cx='24'%20cy='23'%20r='2.5'%20fill='%2338BDF8'/%3e%3cpath%20d='M29%2014L38%2019'%20stroke='%2393C5FD'%20stroke-width='2'%20stroke-linecap='round'/%3e%3cpath%20d='M10%2029L19%2034'%20stroke='%2393C5FD'%20stroke-width='2'%20stroke-linecap='round'/%3e%3c/svg%3e" alt="Company Logo" class="login-logo" />
+      <h1>Stock Management System</h1>
+      <p>Secure Enterprise Portal Authentication</p>
+    </div>
+
+    <form id="standalone-login-form" onsubmit="event.preventDefault(); window.handleStandaloneLogin();">
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label class="form-label" for="login-user">Username or Corporate ID <span class="required-star">*</span></label>
+        <input type="text" id="login-user" class="form-input" placeholder="e.g. admin" value="admin" required />
+      </div>
+
+      <div class="form-group" style="margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <label class="form-label" for="login-pass">Password <span class="required-star">*</span></label>
+          <a href="javascript:void(0)" onclick="alert('Demo Mode: Contact your administrator to reset credentials.')" style="font-size: 12px;">Forgot password?</a>
+        </div>
+        <div class="password-input-wrap">
+          <input type="password" id="login-pass" class="form-input" placeholder="••••••••" value="admin123" required />
+          <button type="button" class="toggle-password-btn" onclick="const p = document.getElementById('login-pass'); p.type = p.type === 'password' ? 'text' : 'password';" aria-label="Toggle password view">
+            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); cursor: pointer;">
+          <input type="checkbox" checked />
+          Remember my session
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" id="btn-submit" style="width: 100%;">
+        Sign In to Portal
+      </button>
+    </form>
+
+    <div class="demo-credentials-box">
+      <p>⚡ Quick Test Credentials (Phase 1):</p>
+      <div class="demo-btn-group">
+        <button class="demo-pill-btn" onclick="document.getElementById('login-user').value='admin'; document.getElementById('login-pass').value='admin123'; window.handleStandaloneLogin();">Admin (Full)</button>
+        <button class="demo-pill-btn" onclick="document.getElementById('login-user').value='manager'; document.getElementById('login-pass').value='mgr123'; window.handleStandaloneLogin();">Stock Manager</button>
+        <button class="demo-pill-btn" onclick="document.getElementById('login-user').value='viewer'; document.getElementById('login-pass').value='view123'; window.handleStandaloneLogin();">Viewer</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
