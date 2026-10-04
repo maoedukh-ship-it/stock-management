@@ -501,9 +501,13 @@ window.submitStockAdjustment = async function() {
         },
         token: auth.getToken()
       });
+      window.showToast('✅ Stock Adjustment successfully posted to Google Sheets!', 'success');
     } catch (e) {
-      console.warn('API createStockAdjustment failed, keeping local memory:', e);
+      console.error('API createStockAdjustment failed:', e);
+      window.showToast(`❌ Google Sheets Error: ${e.message}`, 'error', 8000);
     }
+  } else {
+    window.showToast('⚠️ Demo Mode: Adjustment posted locally. Connect your Google Sheets Web App URL in header to save permanently.', 'warning', 6000);
   }
 
   // Update in-memory state

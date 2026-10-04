@@ -521,9 +521,13 @@ window.submitStockIn = async function() {
         data: payload,
         token: auth.getToken()
       });
+      window.showToast('✅ Stock In successfully recorded in Google Sheets!', 'success');
     } catch (e) {
-      console.warn('API Stock In failed, updating in-memory state:', e);
+      console.error('API Stock In failed:', e);
+      window.showToast(`❌ Google Sheets Error: ${e.message}`, 'error', 8000);
     }
+  } else {
+    window.showToast('⚠️ Demo Mode: Transaction recorded locally. Connect your Google Sheets Web App URL in header to save permanently.', 'warning', 6000);
   }
 
   // Update in-memory state

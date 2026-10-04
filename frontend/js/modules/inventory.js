@@ -523,17 +523,19 @@ window.submitNewProduct = async function() {
   };
 
   // Live API Creation
+  let apiSaved = false;
   if (api.isConfigured()) {
     try {
-      window.showToast('Creating product in Google Sheets...', 'info');
-      await api.request('createProduct', {
-        method: 'POST',
-        data: newPrd,
-        token: auth.getToken()
-      });
+      window.showToast('Saving product to Google Sheets...', 'info');
+      await api.createProduct(newPrd, auth.getToken());
+      apiSaved = true;
+      window.showToast(`✅ Product "${name}" saved to Google Sheets!`, 'success');
     } catch (err) {
-      console.warn('API creation failed, continuing in memory:', err);
+      console.error('API createProduct failed:', err);
+      window.showToast(`❌ Google Sheets Error: ${err.message}`, 'error', 8000);
     }
+  } else {
+    window.showToast(`⚠️ Demo Mode: Product "${name}" saved locally. To save to Google Sheets, connect your Web App URL in the top header.`, 'warning', 6000);
   }
 
   liveProducts.unshift(newPrd);
@@ -570,7 +572,6 @@ window.submitNewProduct = async function() {
   });
 
   window.closeModal();
-  window.showToast(`Product "${name}" added to master catalog successfully.`, 'success');
 
   const container = document.getElementById('view-content');
   if (container) container.innerHTML = renderInventory();

@@ -49,7 +49,8 @@ function getProductById(id) {
 }
 
 function createProduct(payload, session) {
-  requireAuth(session ? session.token : null, ['ADMIN', 'STOCK_MANAGER']);
+  const token = session ? session.token : (payload ? payload.token : null);
+  session = requireAuth(token, ['ADMIN', 'STOCK_MANAGER']);
 
   const ss = getSpreadsheet();
   const sheet = ss.getSheetByName(CONFIG.SHEETS.PRODUCTS);

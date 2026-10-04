@@ -333,8 +333,10 @@ window.submitNewUser = async function() {
   SAMPLE_USERS.push(newUser);
 
   // Live Backend Call
+  let apiSaved = false;
   if (api.isConfigured()) {
     try {
+      window.showToast('Saving new operator to Google Sheets...', 'info');
       await api.createUser({
         username,
         password,
@@ -342,9 +344,14 @@ window.submitNewUser = async function() {
         email,
         role
       }, auth.getToken());
+      apiSaved = true;
+      window.showToast(`✅ Operator @${username} recorded in Google Sheets!`, 'success');
     } catch (e) {
-      console.warn('API createUser failed, added in local session:', e);
+      console.error('API createUser failed:', e);
+      window.showToast(`❌ Google Sheets Error: ${e.message}`, 'error', 8000);
     }
+  } else {
+    window.showToast(`⚠️ Demo Mode: Operator @${username} saved locally. To save to Google Sheets, connect your Web App URL in the top header.`, 'warning', 6000);
   }
 
   SAMPLE_AUDIT_LOGS.unshift({
@@ -359,7 +366,6 @@ window.submitNewUser = async function() {
   });
 
   window.closeModal();
-  window.showToast(`Operator @${username} provisioned successfully with role ${role}.`, 'success');
   const container = document.getElementById('view-content');
   if (container) container.innerHTML = renderUsers();
 };

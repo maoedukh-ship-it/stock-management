@@ -318,6 +318,12 @@ window.openApiStatusModal = function() {
     onPrimary: () => {
       const input = document.getElementById('modal-api-url');
       const val = input ? input.value.trim() : '';
+      
+      if (val && (val.includes('script.googleusercontent.com') || val.includes('/echo'))) {
+        window.showToast('⚠️ Echo URL detected! Please copy the Web App URL from Apps Script (Deploy > Manage deployments) ending in /exec.', 'warning', 9000);
+        return;
+      }
+
       if (window.api) {
         window.api.setApiUrl(val);
       }
@@ -338,13 +344,35 @@ window.testModalApiConnection = async function() {
   const resultBox = document.getElementById('modal-api-test-result');
   const url = input ? input.value.trim() : '';
 
-  if (!url || !url.startsWith('https://script.google.com/')) {
+  if (!url) {
     if (resultBox) {
       resultBox.style.display = 'block';
       resultBox.style.background = 'var(--danger-light)';
       resultBox.style.color = 'var(--danger-text)';
       resultBox.style.border = '1px solid var(--danger-border)';
-      resultBox.textContent = '❌ Please enter a valid Google Apps Script Web App URL (starts with https://script.google.com/).';
+      resultBox.textContent = '❌ Please enter a Google Apps Script Web App URL.';
+    }
+    return;
+  }
+
+  if (url.includes('script.googleusercontent.com') || url.includes('/echo')) {
+    if (resultBox) {
+      resultBox.style.display = 'block';
+      resultBox.style.background = 'var(--warning-light)';
+      resultBox.style.color = 'var(--warning-text)';
+      resultBox.style.border = '1px solid var(--warning-border)';
+      resultBox.innerHTML = `⚠️ <strong>Redirected Echo URL detected!</strong><br>When you open the Web App URL in your browser, Google redirects to <code>script.googleusercontent.com</code>.<br><br>👉 <strong>How to get the correct URL:</strong><br>1. In Google Apps Script, click <strong>Deploy → Manage deployments</strong>.<br>2. Under "Web app", copy the <strong>URL</strong>.<br>3. It must start with: <code>https://script.google.com/macros/s/.../exec</code>`;
+    }
+    return;
+  }
+
+  if (!url.startsWith('https://script.google.com/')) {
+    if (resultBox) {
+      resultBox.style.display = 'block';
+      resultBox.style.background = 'var(--danger-light)';
+      resultBox.style.color = 'var(--danger-text)';
+      resultBox.style.border = '1px solid var(--danger-border)';
+      resultBox.textContent = '❌ Please enter a valid Google Apps Script Web App URL (starts with https://script.google.com/macros/s/.../exec).';
     }
     return;
   }

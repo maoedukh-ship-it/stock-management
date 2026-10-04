@@ -583,9 +583,13 @@ window.submitStockOut = async function() {
         data: payload,
         token: auth.getToken()
       });
+      window.showToast('✅ Stock Out successfully recorded in Google Sheets!', 'success');
     } catch (e) {
-      console.warn('API Stock Out failed, maintaining local memory state:', e);
+      console.error('API Stock Out failed:', e);
+      window.showToast(`❌ Google Sheets Error: ${e.message}`, 'error', 8000);
     }
+  } else {
+    window.showToast('⚠️ Demo Mode: Transaction recorded locally. Connect your Google Sheets Web App URL in header to save permanently.', 'warning', 6000);
   }
 
   // Update in-memory state

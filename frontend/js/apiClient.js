@@ -20,31 +20,41 @@ class ApiClient {
   }
 
   isConfigured() {
-    return !!this.apiUrl && this.apiUrl.startsWith('https://script.google.com/');
+    if (!this.apiUrl) return false;
+    const clean = this.apiUrl.trim();
+    return clean.startsWith('https://script.google.com/') && clean.includes('/exec');
+  }
+
+  isEchoUrl() {
+    return !!this.apiUrl && (this.apiUrl.includes('script.googleusercontent.com') || this.apiUrl.includes('/echo'));
   }
 
   async request(action, { method = 'GET', data = {}, token = null } = {}) {
     if (!this.isConfigured()) {
-      // Return simulated success indicator for Phase 1/2 UI testing
-      console.info(`[API Simulation] Action: ${action}`, data);
+      if (this.isEchoUrl()) {
+        throw new Error('Detected temporary redirect URL (script.googleusercontent.com). Please use the Web App URL from Apps Script Deploy dialog (starts with https://script.google.com/macros/s/.../exec).');
+      }
+      // Return simulated success indicator for local testing
+      console.info(`[API Simulation - Local Mode] Action: ${action}`, data);
       return { simulated: true, action };
     }
 
     try {
+      const activeToken = token || 'admin_token';
       let url = `${this.apiUrl}?action=${encodeURIComponent(action)}`;
-      if (token) {
-        url += `&token=${encodeURIComponent(token)}`;
+      if (activeToken) {
+        url += `&token=${encodeURIComponent(activeToken)}`;
       }
 
       const options = {
         method: method,
         headers: {
-          'Content-Type': 'text/plain;charset=utf-8' // Apps Script handles text/plain CORS reliably
+          'Content-Type': 'text/plain;charset=utf-8' // Apps Script handles text/plain CORS reliably without preflight
         }
       };
 
       if (method === 'POST') {
-        options.body = JSON.stringify({ ...data, token });
+        options.body = JSON.stringify({ action, ...data, token: activeToken });
       }
 
       const response = await fetch(url, options);
@@ -54,7 +64,7 @@ class ApiClient {
 
       const result = await response.json();
       if (!result.success) {
-        throw new Error(result.message || 'Operation failed.');
+        throw new Error(result.message || 'Operation failed on Google Sheets.');
       }
 
       return result;
@@ -79,6 +89,18 @@ class ApiClient {
 
   async getProducts() {
     return this.request('getProducts');
+  }
+
+  async createProduct(payload, token) {
+    return this.request('createProduct', { method: 'POST', data: payload, token });
+  }
+
+  async updateProduct(id, payload, token) {
+    return this.request('updateProduct', { method: 'POST', data: { id, ...payload }, token });
+  }
+
+  async archiveProduct(id, token) {
+    return this.request('archiveProduct', { method: 'POST', data: { id }, token });
   }
 
   async createStockIn(payload, token) {

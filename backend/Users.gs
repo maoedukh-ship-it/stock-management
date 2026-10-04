@@ -31,7 +31,8 @@ function getUsers(session) {
 }
 
 function createUser(payload, session) {
-  requireAuth(session ? session.token : null, ['ADMIN']);
+  const token = session ? session.token : (payload ? payload.token : null);
+  session = requireAuth(token, ['ADMIN']);
 
   const ss = getSpreadsheet();
   const sheet = ss.getSheetByName(CONFIG.SHEETS.USERS);
