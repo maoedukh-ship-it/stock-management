@@ -219,8 +219,179 @@ class AppRouter {
         }
       });
     }
+
+    // Initialize API Header Status badge
+    window.updateHeaderApiStatus();
   }
 }
+
+/* Global Database Status & Connection Modal */
+window.updateHeaderApiStatus = async function() {
+  const badge = document.getElementById('header-status-badge');
+  const dot = document.getElementById('header-status-dot');
+  const text = document.getElementById('header-status-text');
+  if (!badge || !dot || !text) return;
+
+  if (!window.api || !window.api.isConfigured()) {
+    badge.className = 'system-status-indicator is-demo';
+    dot.className = 'status-dot dot-warning';
+    text.textContent = '🟡 Demo Mode';
+    badge.title = 'Running on local demo data. Click to connect your live Google Sheets database!';
+    return;
+  }
+
+  badge.className = 'system-status-indicator';
+  dot.className = 'status-dot';
+  text.textContent = 'Checking API...';
+
+  try {
+    const res = await window.api.ping();
+    if (res && res.success) {
+      badge.className = 'system-status-indicator is-live';
+      dot.className = 'status-dot';
+      text.textContent = '🟢 Google Sheets Live';
+      badge.title = `Connected live to Google Sheets database. Click to manage connection.`;
+    } else {
+      badge.className = 'system-status-indicator is-error';
+      dot.className = 'status-dot dot-danger';
+      text.textContent = '🔴 API Disconnected';
+      badge.title = 'API responded with error. Click to test or update URL.';
+    }
+  } catch (err) {
+    badge.className = 'system-status-indicator is-error';
+    dot.className = 'status-dot dot-danger';
+    text.textContent = '🔴 Connection Offline';
+    badge.title = 'Could not reach Google Apps Script Web App. Click to configure.';
+  }
+};
+
+window.openApiStatusModal = function() {
+  const currentUrl = window.api ? window.api.getApiUrl() : '';
+  const isConfig = window.api && window.api.isConfigured();
+
+  window.openModal({
+    title: 'Google Sheets Database Connection',
+    body: `
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: ${isConfig ? 'var(--success-light)' : 'var(--warning-light)'}; border: 1px solid ${isConfig ? 'var(--success-border)' : 'var(--warning-border)'}; border-radius: var(--radius-md);">
+          <div>
+            <div style="font-weight: 700; font-size: 14px; color: ${isConfig ? 'var(--success-text)' : 'var(--warning-text)'};">
+              ${isConfig ? '✅ Live Google Sheets Configured' : '⚡ Demo Mode Active'}
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+              ${isConfig ? 'All inventory operations synchronize live with your Google Spreadsheet.' : 'Operating on in-memory mock data. Connect your Google Apps Script Web App below.'}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="modal-api-url">Google Apps Script Web App URL <span class="required-star">*</span></label>
+          <div style="display: flex; gap: 8px; margin-top: 4px;">
+            <input 
+              type="url" 
+              id="modal-api-url" 
+              class="form-input" 
+              placeholder="https://script.google.com/macros/s/AKfycbx.../exec" 
+              value="${currentUrl}"
+              style="flex: 1;"
+            />
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-modal-test-api" onclick="window.testModalApiConnection()">
+              Test Ping
+            </button>
+          </div>
+          <div class="form-hint" style="margin-top: 4px;">Must end in <code>/exec</code> and have permissions set to "Execute as Me" and "Access: Anyone".</div>
+        </div>
+
+        <div id="modal-api-test-result" style="display: none; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px;"></div>
+
+        <div style="border-top: 1px solid var(--border); padding-top: 12px;">
+          <div style="font-weight: 600; font-size: 12.5px; color: var(--text-main); margin-bottom: 6px;">📋 3-Step Setup Instructions:</div>
+          <ol style="font-size: 12px; color: var(--text-muted); line-height: 1.6; padding-left: 18px;">
+            <li>Open your Google Sheet: <a href="https://docs.google.com/spreadsheets/d/1JBdQ-LVjBMvCiKxC8SH11bzDksPnIdmMFpXHNXasREM/edit" target="_blank" style="font-weight: 600;">Stock_Management_Database</a></li>
+            <li>In Google Sheets, open <strong>Extensions → Apps Script</strong> and paste <code>backend/UNIFIED_BACKEND_SUITE.gs</code> into <code>Code.gs</code>.</li>
+            <li>Click <strong>Deploy → New deployment → Web app</strong> (Access: Anyone) and paste the URL here.</li>
+          </ol>
+        </div>
+      </div>
+    `,
+    primaryText: 'Save & Synchronize',
+    onPrimary: () => {
+      const input = document.getElementById('modal-api-url');
+      const val = input ? input.value.trim() : '';
+      if (window.api) {
+        window.api.setApiUrl(val);
+      }
+      window.updateHeaderApiStatus();
+      window.closeModal();
+      window.showToast(val ? 'Google Apps Script Web App URL updated! Synchronizing data...' : 'Switched to Demo Mode.', 'success');
+      // Refresh current view
+      if (window.router) {
+        window.router.handleRoute();
+      }
+    }
+  });
+};
+
+window.testModalApiConnection = async function() {
+  const input = document.getElementById('modal-api-url');
+  const btn = document.getElementById('btn-modal-test-api');
+  const resultBox = document.getElementById('modal-api-test-result');
+  const url = input ? input.value.trim() : '';
+
+  if (!url || !url.startsWith('https://script.google.com/')) {
+    if (resultBox) {
+      resultBox.style.display = 'block';
+      resultBox.style.background = 'var(--danger-light)';
+      resultBox.style.color = 'var(--danger-text)';
+      resultBox.style.border = '1px solid var(--danger-border)';
+      resultBox.textContent = '❌ Please enter a valid Google Apps Script Web App URL (starts with https://script.google.com/).';
+    }
+    return;
+  }
+
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Testing...';
+  }
+  if (resultBox) {
+    resultBox.style.display = 'block';
+    resultBox.style.background = 'var(--surface-alt)';
+    resultBox.style.color = 'var(--text-main)';
+    resultBox.style.border = '1px solid var(--border)';
+    resultBox.textContent = '⏳ Pinging Google Apps Script endpoint...';
+  }
+
+  // Temporarily store URL to test
+  const originalUrl = window.api.getApiUrl();
+  window.api.setApiUrl(url);
+
+  try {
+    const res = await window.api.ping();
+    if (res && res.success) {
+      if (resultBox) {
+        resultBox.style.background = 'var(--success-light)';
+        resultBox.style.color = 'var(--success-text)';
+        resultBox.style.border = '1px solid var(--success-border)';
+        resultBox.innerHTML = `✅ <strong>Connected successfully!</strong> Database responded at ${res.timestamp || new Date().toLocaleTimeString()}. Click "Save & Synchronize" below to activate.`;
+      }
+    } else {
+      throw new Error(res?.message || 'Ping was not acknowledged.');
+    }
+  } catch (err) {
+    window.api.setApiUrl(originalUrl); // revert
+    if (resultBox) {
+      resultBox.style.background = 'var(--danger-light)';
+      resultBox.style.color = 'var(--danger-text)';
+      resultBox.style.border = '1px solid var(--danger-border)';
+      resultBox.innerHTML = `❌ <strong>Connection failed:</strong> ${err.message}<br><small style="color: var(--text-muted);">Ensure the Web App deployment is configured with <em>"Who has access: Anyone"</em>.</small>`;
+    }
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Test Ping';
+    }
+  }
+};
 
 export const router = new AppRouter();
 window.router = router;

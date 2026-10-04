@@ -60,7 +60,7 @@ class ApiClient {
       return result;
     } catch (err) {
       console.error(`[API Error: ${action}]`, err);
-      throw new Error('Unable to connect to the database. Please check your network and Google Apps Script deployment.');
+      throw new Error(err.message || 'Unable to connect to Google Apps Script. Please verify the Web App deployment URL and permissions.');
     }
   }
 

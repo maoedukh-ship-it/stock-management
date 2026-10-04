@@ -19,12 +19,11 @@ Follow these simple steps to generate all 10 worksheets, corporate headers, colu
 
 ---
 
-### Step 2: Paste the Database Setup Scripts
+### Step 2: Paste the Unified Master Script
 In the Apps Script editor:
-1. Replace whatever is in `Code.gs` (or create new files) with the contents from:
-   * **[`backend/Config.gs`](file:///d:/Learning%20Code_2026/Stock%20Management%20Project/backend/Config.gs)**
-   * **[`backend/DatabaseSetup.gs`](file:///d:/Learning%20Code_2026/Stock%20Management%20Project/backend/DatabaseSetup.gs)**
-   *(Or simply copy the combined single-script block provided in your chat window below).*
+1. Replace whatever is in `Code.gs` with the entire contents from:
+   👉 **[`backend/UNIFIED_BACKEND_SUITE.gs`](file:///d:/Learning%20Code_2026/Stock%20Management%20Project/backend/UNIFIED_BACKEND_SUITE.gs)**
+   *(This single master file contains all 10 schemas, authentication, inventory math engine, suppliers, locations, reporting, and CORS-enabled Web API gateway).*
 2. Click the **💾 Save project** icon (or press `Ctrl + S`).
 
 ---
@@ -40,22 +39,22 @@ In the Apps Script editor toolbar:
 
 ---
 
-### Step 4: Verify Your Google Spreadsheet
-Return to your Google Sheet tab. You will now see:
-1. Spreadsheet renamed to **`Stock_Management_Database`**.
-2. **All 10 Worksheets** created with corporate royal blue headers (`#0057E7`) and frozen row 1:
-   - 📑 **`Users`**
-   - 📑 **`Products`**
-   - 📑 **`Categories`**
-   - 📑 **`Suppliers`**
-   - 📑 **`Locations`**
-   - 📑 **`Stock_Transactions`**
-   - 📑 **`Current_Stock`**
-   - 📑 **`Stock_Adjustments`**
-   - 📑 **`Audit_Log`**
-   - 📑 **`Settings`**
-3. A custom menu in your Google Sheets top bar:
-   **`📦 Stock Management`** with 1-click tools:
-   - 🚀 *1. Setup All 10 Sheets & Columns*
-   - 📥 *2. Load Sample Data & Admin User*
-   - 🔄 *Recalculate Current Stock Ledger*
+### Step 4: Deploy as a Web App API
+1. In the top right of Apps Script, click **Deploy** → **New deployment**.
+2. Beside *"Select type"*, click the **⚙ Gear icon** and select **Web app**.
+3. Configure the settings:
+   - **Description**: `Apex Stock Management API v1.0`
+   - **Execute as**: `Me (your email)`
+   - **Who has access**: `Anyone` *(Critical: allows your frontend to connect)*
+4. Click **Deploy**.
+5. Copy the generated **Web app URL** (it ends in `/exec`).
+
+---
+
+### Step 5: Connect Your Live Website
+1. Open your live website: **[https://maoedukh-ship-it.github.io/stock-management/](https://maoedukh-ship-it.github.io/stock-management/)**
+2. In the top header bar, click the **🟡 Demo Mode** status badge (or go to **Settings → Localization & Language**).
+3. Paste your Web App URL into the **Google Apps Script Web App URL** input.
+4. Click **Test Ping** to verify connectivity.
+5. Click **Save & Synchronize**!
+   Your site will switch to **`🟢 Google Sheets Live`** and all data will synchronize directly with your spreadsheet!

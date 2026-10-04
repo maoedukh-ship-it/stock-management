@@ -127,9 +127,9 @@
         </div>
 
         <div class="header-right">
-          <div class="system-status-indicator">
-            <span class="status-dot"></span>
-            <span>Database Online</span>
+          <div class="system-status-indicator" id="header-status-badge" onclick="window.openApiStatusModal()" title="Click to view and configure Google Sheets API connection" style="cursor: pointer;">
+            <span class="status-dot" id="header-status-dot"></span>
+            <span id="header-status-text">Checking Database...</span>
           </div>
 
           <button class="header-btn" title="System Notifications" onclick="window.showToast('All inventory systems operational. 3 items pending re-order.', 'info')">
