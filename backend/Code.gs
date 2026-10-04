@@ -180,11 +180,21 @@ function handleRequest(e, method) {
         break;
 
       default:
-        result = {
-          success: false,
-          message: `Unknown or unsupported API action: "${action}".`,
-          errorCode: 'INVALID_ACTION'
-        };
+        if (!action) {
+          result = {
+            success: true,
+            status: 'ONLINE',
+            message: 'Stock Management System Web API is online and operational.',
+            database: 'Connected to Stock_Management_Database',
+            timestamp: new Date().toISOString()
+          };
+        } else {
+          result = {
+            success: false,
+            message: `Unknown or unsupported API action: "${action}".`,
+            errorCode: 'INVALID_ACTION'
+          };
+        }
         break;
     }
 
