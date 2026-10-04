@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Stock Management System</title>
+    <script>
+      // Single Page App redirect for GitHub Pages
+      var path = window.location.pathname;
+      var repo = '/stock-management';
+      if (path.startsWith(repo)) {
+        window.location.replace(repo + '/index.html' + window.location.hash);
+      } else {
+        window.location.replace('./index.html' + window.location.hash);
+      }
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to Stock Management System...</p>
+  </body>
+</html>
