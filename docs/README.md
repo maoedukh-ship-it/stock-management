@@ -8,7 +8,8 @@ A modern, responsive, corporate-grade Stock Management System engineered for sma
 - **Backend API Layer**: Google Apps Script (REST JSON Service via `doGet`/`doPost`)
 - **Primary Database**: Single Google Spreadsheet (`Stock_Management_Database`)
 - **Document & Asset Storage**: Google Drive
-- **Version Control**: Git & GitHub
+- **Version Control**: Git & GitHub: [maoedukh-ship-it/stock-management](https://github.com/maoedukh-ship-it/stock-management)
+- **Live Deployment**: [GitHub Pages Application](https://maoedukh-ship-it.github.io/stock-management/)
 
 ### Corporate Color System
 - Primary: `#0057E7` (Action buttons, brand elements, active states)
