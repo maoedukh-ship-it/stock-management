@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Management System | Enterprise Inventory & Operations</title>
+  <meta name="description" content="Modern, professional, responsive corporate Stock Management System for small-to-medium business operations." />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- App Shell -->
+  <div id="app-shell" class="app-container">
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="sidebar-overlay"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="/assets/logo.svg" alt="SMS Logo" class="sidebar-logo" />
+        <div class="sidebar-brand">
+          <span class="sidebar-title">Apex Stock IMS</span>
+          <span class="sidebar-badge">Enterprise v1.0</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <span class="nav-section-title">Core Operations</span>
+        <a href="#dashboard" class="nav-item active" data-route="dashboard">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="#inventory" class="nav-item" data-route="inventory">
+          <svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          <span>Inventory Ledger</span>
+        </a>
+
+        <span class="nav-section-title">Movement & Counts</span>
+        <a href="#stock-in" class="nav-item" data-route="stock-in">
+          <svg viewBox="0 0 24 24"><path d="M7 11l5-5m0 0l5 5m-5-5v12"/></svg>
+          <span>Stock In</span>
+        </a>
+
+        <a href="#stock-out" class="nav-item" data-route="stock-out">
+          <svg viewBox="0 0 24 24"><path d="M17 13l-5 5m0 0l-5-5m5 5V6"/></svg>
+          <span>Stock Out</span>
+        </a>
+
+        <a href="#adjustment" class="nav-item" data-route="adjustment">
+          <svg viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+          <span>Adjustment</span>
+        </a>
+
+        <span class="nav-section-title">Master Data</span>
+        <a href="#categories" class="nav-item" data-route="categories">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+          <span>Categories</span>
+        </a>
+
+        <a href="#suppliers" class="nav-item" data-route="suppliers">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          <span>Suppliers</span>
+        </a>
+
+        <a href="#locations" class="nav-item" data-route="locations">
+          <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>Locations</span>
+        </a>
+
+        <a href="#reports" class="nav-item" data-route="reports">
+          <svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <span>Reports</span>
+        </a>
+
+        <span class="nav-section-title">Administration</span>
+        <a href="#users" class="nav-item" data-route="users">
+          <svg viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <span>Users</span>
+        </a>
+
+        <a href="#audit-log" class="nav-item" data-route="audit-log">
+          <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span>Audit Log</span>
+        </a>
+
+        <a href="#settings" class="nav-item" data-route="settings">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 0010 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 10a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-mini">
+          <div class="user-avatar" id="shell-user-avatar">AT</div>
+          <div class="user-info-text">
+            <span class="user-name" id="shell-user-name">Alex Thorne</span>
+            <span class="user-role-badge" id="shell-user-role">ADMIN</span>
+          </div>
+        </div>
+        <button class="btn-icon-logout" title="Sign Out" onclick="window.router.navigate('logout')">
+          <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2;"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <div class="main-wrapper">
+      <!-- Top Navigation Header -->
+      <header class="header">
+        <div class="header-left">
+          <button id="mobile-menu-btn" class="mobile-menu-toggle" aria-label="Toggle Navigation Menu">
+            <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2;"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          
+          <div class="breadcrumb-container">
+            <span>Apex IMS</span>
+            <span>/</span>
+            <span class="breadcrumb-item active" id="header-breadcrumb">DASHBOARD</span>
+          </div>
+        </div>
+
+        <div class="header-search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="global-search-input" placeholder="Quick find product, SKU, supplier (Press Enter)..." />
+        </div>
+
+        <div class="header-right">
+          <div class="system-status-indicator">
+            <span class="status-dot"></span>
+            <span>Database Online</span>
+          </div>
+
+          <button class="header-btn" title="System Notifications" onclick="window.showToast('All inventory systems operational. 3 items pending re-order.', 'info')">
+            <svg viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            <span class="notification-dot"></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dynamic View Container -->
+      <main class="page-container" id="view-content">
+        <!-- Rendered modular view goes here -->
+      </main>
+    </div>
+  </div>
+
+  <!-- Standalone / In-App Login Screen Overlay -->
+  <div id="login-shell" class="login-body" style="display: none;">
+    <div class="login-card">
+      <div class="login-brand">
+        <img src="/assets/logo.svg" alt="Company Logo" class="login-logo" />
+        <h1>Stock Management System</h1>
+        <p>Enterprise Inventory & Resource Planning</p>
+      </div>
+
+      <form id="login-form" onsubmit="window.handleLoginSubmit(event)">
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label" for="login-username">Username or Corporate ID <span class="required-star">*</span></label>
+          <input type="text" id="login-username" class="form-input" placeholder="e.g. admin" value="admin" required />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label class="form-label" for="login-password">Password <span class="required-star">*</span></label>
+            <a href="javascript:void(0)" onclick="window.showToast('Please contact system administrator to reset credentials.', 'info')" style="font-size: 12px;">Forgot password?</a>
+          </div>
+          <div class="password-input-wrap">
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" value="admin123" required />
+            <button type="button" class="toggle-password-btn" onclick="window.togglePasswordVisibility()" aria-label="Toggle password view">
+              <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); cursor: pointer;">
+            <input type="checkbox" id="login-remember" checked />
+            Remember my session
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" id="btn-login-submit" style="width: 100%;">
+          Sign In to Portal
+        </button>
+      </form>
+
+      <!-- Quick Demo Switcher for Phase 1 testing -->
+      <div class="demo-credentials-box">
+        <p>⚡ Quick Test Credentials (Phase 1 Visual Shell):</p>
+        <div class="demo-btn-group">
+          <button class="demo-pill-btn" onclick="window.quickLogin('admin')">Admin (Full)</button>
+          <button class="demo-pill-btn" onclick="window.quickLogin('manager')">Stock Manager</button>
+          <button class="demo-pill-btn" onclick="window.quickLogin('viewer')">Viewer (Read Only)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript Entry Module -->
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
